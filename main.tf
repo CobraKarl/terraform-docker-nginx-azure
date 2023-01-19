@@ -115,13 +115,15 @@ resource "azurerm_app_service" "app" {
 
 
 }
-
-provisioner "local-exec" {
+resource "null_resource" "pushtoacr" {
+  provisioner "local-exec" {
   command = <<EOT
     az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile .
   EOT
-
+  }
+  
 }
+
 
 
 
