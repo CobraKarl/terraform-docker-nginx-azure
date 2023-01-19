@@ -66,9 +66,10 @@ resource "azurerm_container_registry_task" "build" {
   }
   docker_step {
     dockerfile_path      = "Dockerfile"
-    context_path         = "containerregistrymkk2000.azurecr.io"
+    # context_path         = "containerregistrymkk2000.azurecr.io"
     image_names = [ "mkk2" ]
     # target = "mkk2"
+    
     
     context_access_token = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
   }
