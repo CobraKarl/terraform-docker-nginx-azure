@@ -58,11 +58,6 @@ resource "azurerm_container_registry" "container_registry" {
 
 }
 
-resource "docker_container" "mkk" {
-
-
-}
-
 resource "azurerm_container_registry_task" "build" {
   name                  = "mkk2"
   container_registry_id = azurerm_container_registry.container_registry.id
