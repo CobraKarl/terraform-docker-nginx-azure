@@ -56,25 +56,27 @@ resource "azurerm_container_registry" "container_registry" {
     azurerm_resource_group.rg
   ]
 
-}
-
-resource "azurerm_container_registry_task" "build" {
-  name                  = "buildmkk2"
-  container_registry_id = azurerm_container_registry.container_registry.id
-  platform {
-    os = "Linux"
-  }
-  docker_step {
-    dockerfile_path      = "./Dockerfile"
-    context_path         = "https://appmkk2000.azurewebsites.net/"
-    image_names = [ "mkk2" ]
-    # target = "mkk2"
-    
-    
-    context_access_token = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
-  }
 
 }
+
+
+# resource "azurerm_container_registry_task" "build" {
+#   name                  = "buildmkk2"
+#   container_registry_id = azurerm_container_registry.container_registry.id
+#   platform {
+#     os = "Linux"
+#   }
+#   docker_step {
+#     dockerfile_path      = "./Dockerfile"
+#     context_path         = "https://appmkk2000.azurewebsites.net/"
+#     image_names = [ "mkk2" ]
+#     # target = "mkk2"
+    
+    
+#     context_access_token = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
+#   }
+
+# }
 
 resource "azurerm_app_service_plan" "asp" {
   name                = "asp${var.RGName}"
@@ -113,6 +115,15 @@ resource "azurerm_app_service" "app" {
 
 
 }
+
+provisioner "local-exec" {
+  command = <<EOT
+    az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile .
+  EOT
+
+}
+
+
 
 
 
