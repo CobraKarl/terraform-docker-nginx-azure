@@ -66,7 +66,7 @@ resource "azurerm_container_registry_task" "build" {
   }
   docker_step {
     dockerfile_path      = "./Dockerfile"
-    context_path         = https://appmkk2000.azurewebsites.net/"
+    context_path         = "https://appmkk2000.azurewebsites.net/"
     image_names = [ "mkk2" ]
     # target = "mkk2"
     
