@@ -1,0 +1,10 @@
+subscriptionId=$(az account show --query id --output tsv)
+az ad sp create-for-rbac --role contributor --scopes /subscriptions/$subscriptionId
+az account show --query id --output tsv
+
+
+
+# appId = clientId
+# password = clientSecret
+# tenant = tenantId
+# subscriptionId = az account show --query id --output tsv
