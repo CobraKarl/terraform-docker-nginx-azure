@@ -46,6 +46,8 @@ resource "azurerm_storage_container" "container" {
 
 }
 
+
+
 resource "azurerm_container_registry" "container_registry" {
   name                = "containerregistry${var.RGName}"
   resource_group_name = var.RGName
@@ -60,6 +62,8 @@ resource "azurerm_container_registry" "container_registry" {
 }
 
 
+
+
 # resource "azurerm_container_registry_task" "build" {
 #   name                  = "buildmkk2"
 #   container_registry_id = azurerm_container_registry.container_registry.id
@@ -71,8 +75,8 @@ resource "azurerm_container_registry" "container_registry" {
 #     context_path         = "https://appmkk2000.azurewebsites.net/"
 #     image_names = [ "mkk2" ]
 #     # target = "mkk2"
-    
-    
+
+
 #     context_access_token = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
 #   }
 
@@ -89,8 +93,12 @@ resource "azurerm_app_service_plan" "asp" {
     size = "S1"
 
   }
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
 
 }
+
 
 resource "azurerm_app_service" "app" {
   name                = "app${var.RGName}"
@@ -99,14 +107,14 @@ resource "azurerm_app_service" "app" {
   app_service_plan_id = azurerm_app_service_plan.asp.id
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "DOCKER_REGISTRY_SERVER_URL"          = "containerregistrymkk2000.azurecr.io"
-    "DOCKER_REGISTRY_SERVER_USERNAME"     = "containerregistrymkk2000"
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
+    "DOCKER_REGISTRY_SERVER_URL"          = "${azurerm_container_registry.name}.azure.io"
+    "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.container_registry.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.container_registry.admin_password
 
 
   }
   site_config {
-    linux_fx_version = "DOCKER|containerregistrymkk2000.azurecr.io/mkk:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.container_registry.name}.azurecr.io/mkk:latest"
 
   }
   identity {
@@ -115,14 +123,14 @@ resource "azurerm_app_service" "app" {
 
 
 }
-resource "null_resource" "pushtoacr" {
-  provisioner "local-exec" {
-  command = <<EOT
-    az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile .
-  EOT
-  }
-  
-}
+# resource "null_resource" "pushtoacr" {
+#   provisioner "local-exec" {
+#     command = <<EOT
+#     az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile .
+#   EOT
+#   }
+
+# }
 
 
 
