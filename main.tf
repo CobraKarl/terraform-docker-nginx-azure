@@ -59,7 +59,7 @@ resource "azurerm_container_registry" "container_registry" {
 }
 
 resource "azurerm_container_registry_task" "build" {
-  name                  = "mkk2"
+  name                  = "buildmkk2"
   container_registry_id = azurerm_container_registry.container_registry.id
   platform {
     os = "Linux"
