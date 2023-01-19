@@ -57,3 +57,41 @@ resource "azurerm_container_registry" "container_registry" {
   ]
 }
 
+resource "azurerm_app_service_plan" "asp" {
+    name = "asp${var.RGName}"
+    resource_group_name = var.RGName
+    location = var.location
+    kind = "Linux"
+    reserved = true
+    sku {
+      tier = "Standard"
+      size = "S1"
+      
+    }
+  
+}
+
+resource "azurerm_app_service" "app" {
+    name = "app${var.RGName}"
+    resource_group_name = var.RGName
+    location = var.location
+    app_service_plan_id = azurerm_app_service_plan.asp.id
+    app_settings = {
+      "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+      "DOCKER_REGISTRY_SERVER_URL" = "${azurerm_container_registry.name}.azurecr.io"
+      "DOCKER_REGISTRY_SERVER_USERNAME" = "${azurerm_container_registry.name}"
+      "DOCKER_REGISTRY_SERVER_PASSWORD" = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
+
+
+    }
+    site_config {
+        linux_fx_version = "DOCKER|${azurerm_container_registry.name}.azurecr.io/${var.dockerimage}:latest"
+      
+    }
+    identity {
+      type = "SystemAssigned"
+    }
+    
+  
+}
+
