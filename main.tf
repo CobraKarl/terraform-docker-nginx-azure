@@ -8,31 +8,31 @@ terraform {
 }
 
 provider "azurerm" {
-    subscription_id = var.subscriptionId
-    client_id = var.clientId
-    client_secret = var.clientSecret
-    tenant_id = var.tenantId
+  subscription_id = var.subscriptionId
+  client_id       = var.clientId
+  client_secret   = var.clientSecret
+  tenant_id       = var.tenantId
   features {
 
   }
 }
 
 resource "azurerm_resource_group" "rg" {
-    name = var.RGName
-    location = var.location
-  
+  name     = var.RGName
+  location = var.location
+
 }
 
 resource "azurerm_storage_account" "storage" {
-    name = "azstorage"
-    resource_group_name = var.RGName
-    location = var.location
-    account_tier             = "Standard"
-    account_replication_type = "LRS"
-    allow_blob_public_access = true
-    depends_on = [
-      azurerm_resource_group.rg
-    ]
+  name                     = "azstorage${var.RGName}"
+  resource_group_name      = var.RGName
+  location                 = var.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  allow_blob_public_access = true
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
 
 }
 
@@ -47,13 +47,13 @@ resource "azurerm_storage_container" "container" {
 }
 
 resource "azurerm_container_registry" "container_registry" {
-    name = "containerregistry"
-    resource_group_name = var.RGName
-    location = var.location
-    sku = "Basic"
-    admin_enabled = true
-    depends_on = [
-      azurerm_resource_group.rg
-    ] 
+  name                = "containerregistry${var.RGName}"
+  resource_group_name = var.RGName
+  location            = var.location
+  sku                 = "Basic"
+  admin_enabled       = true
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
 }
 
