@@ -85,7 +85,7 @@ resource "azurerm_app_service" "app" {
 
   }
   site_config {
-    linux_fx_version = "DOCKER|containerregistrymkk2000.azurecr.io/${var.dockerimage}:latest"
+    linux_fx_version = "DOCKER|containerregistrymkk2000.azurecr.io/${dockerimage}:latest"
 
   }
   identity {
