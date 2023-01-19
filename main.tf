@@ -55,27 +55,28 @@ resource "azurerm_container_registry" "container_registry" {
   depends_on = [
     azurerm_resource_group.rg
   ]
-  
-}
-resource "null_resource" "docker_build" {
-  provisioner "local-exec" {
-    command = "az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile ."
-  
-  }
-  
+
 }
 
-# resource "azurerm_container_registry_task" "build" {
-#   name = "mkk2"
-#   container_registry_id = azurerm_container_registry.container_registry.id
-#   platform {
-#     os = "Linux"
-#   }
-#   docker_step {
-#     dockerfile_path = "Dockerfile"
-#   }
-  
-# }
+resource "docker_container" "mkk" {
+
+
+}
+
+resource "azurerm_container_registry_task" "build" {
+  name                  = "mkk2"
+  container_registry_id = azurerm_container_registry.container_registry.id
+  platform {
+    os = "Linux"
+  }
+  docker_step {
+    dockerfile_path      = "Dockerfile"
+    context_path         = azurerm_container_registry.container_registry.name
+    image_names          = "mkk"
+    context_access_token = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
+  }
+
+}
 
 resource "azurerm_app_service_plan" "asp" {
   name                = "asp${var.RGName}"
