@@ -58,40 +58,40 @@ resource "azurerm_container_registry" "container_registry" {
 }
 
 resource "azurerm_app_service_plan" "asp" {
-    name = "asp${var.RGName}"
-    resource_group_name = var.RGName
-    location = var.location
-    kind = "Linux"
-    reserved = true
-    sku {
-      tier = "Standard"
-      size = "S1"
-      
-    }
-  
+  name                = "asp${var.RGName}"
+  resource_group_name = var.RGName
+  location            = var.location
+  kind                = "Linux"
+  reserved            = true
+  sku {
+    tier = "Standard"
+    size = "S1"
+
+  }
+
 }
 
 resource "azurerm_app_service" "app" {
-    name = "app${var.RGName}"
-    resource_group_name = var.RGName
-    location = var.location
-    app_service_plan_id = azurerm_app_service_plan.asp.id
-    app_settings = {
-      "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-      "DOCKER_REGISTRY_SERVER_URL" = "containerregistrymkk2000.azurecr.io"
-      "DOCKER_REGISTRY_SERVER_USERNAME" = "containerregistrymkk2000"
-      "DOCKER_REGISTRY_SERVER_PASSWORD" = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
+  name                = "app${var.RGName}"
+  resource_group_name = var.RGName
+  location            = var.location
+  app_service_plan_id = azurerm_app_service_plan.asp.id
+  app_settings = {
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "DOCKER_REGISTRY_SERVER_URL"          = "containerregistrymkk2000.azurecr.io"
+    "DOCKER_REGISTRY_SERVER_USERNAME"     = "containerregistrymkk2000"
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = "p9gfA+v/8b6jsMSarb/1mtAxz6+XQsQPMgU8lazU10+ACRB5DQZJ"
 
 
-    }
-    site_config {
-        linux_fx_version = "DOCKER|${azurerm_container_registry.name}.azurecr.io/${var.dockerimage}:latest"
-      
-    }
-    identity {
-      type = "SystemAssigned"
-    }
-    
-  
+  }
+  site_config {
+    linux_fx_version = "DOCKER|containerregistrymkk2000.azurecr.io/${var.dockerimage}:latest"
+
+  }
+  identity {
+    type = "SystemAssigned"
+  }
+
+
 }
 
