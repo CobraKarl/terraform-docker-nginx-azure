@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Get the reource group name
+resourceGroup=$(az group list --tag Contact=mikael.karlsson@nordcloud.com --query "[0].[name]" --output tsv)
+
+# Get the name of the container registry
+containerRegistryName=$(az acr list -g $resourceGroup --query "[0].[name]" --output tsv)
+
+# Get the name of the webapp
+webapp=$(az webapp list -g $resourceGroup --query "[0].[name]" --output tsv)
+
+# Get the name of the linuxFxVersion and filter out just the image name
+MYSTRING=$(az functionapp config show --name $webapp --resource-group $resourceGroup --query 'linuxFxVersion' --output tsv)
+
+NAME=${MYSTRING##*/}
+NAME=${NAME%:*}
+dockerImage=$NAME
+echo $NAME
+
+# Build the Docker image in Azure container registry
+az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile .
+
+
+
+

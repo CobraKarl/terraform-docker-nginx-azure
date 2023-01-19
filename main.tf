@@ -55,6 +55,10 @@ resource "azurerm_container_registry" "container_registry" {
   depends_on = [
     azurerm_resource_group.rg
   ]
+  provisioner "local-exec" {
+    command = "az acr build --image mkk --resource-group mkk2000 --registry  containerregistrymkk2000 --file Dockerfile ."
+  
+  }
 }
 
 resource "azurerm_app_service_plan" "asp" {
@@ -94,4 +98,8 @@ resource "azurerm_app_service" "app" {
 
 
 }
+
+
+
+
 
