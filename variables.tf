@@ -27,7 +27,7 @@ variable "tenantId" {
 }
 
 variable "dockerimage" {
-    type = string
-    default = "mkkimage"
-  
+  type    = string
+  default = "mkkimage"
+
 }
