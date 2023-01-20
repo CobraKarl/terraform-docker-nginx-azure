@@ -78,7 +78,8 @@ resource "azurerm_app_service_plan" "asp" {
 
   }
   depends_on = [
-    azurerm_resource_group.rg
+    azurerm_resource_group.rg,
+    azurerm_container_registry
   ]
 
 }
@@ -91,14 +92,14 @@ resource "azurerm_app_service" "app" {
   app_service_plan_id = azurerm_app_service_plan.asp.id
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "DOCKER_REGISTRY_SERVER_URL"          = "${azurerm_container_registry.acr.login_server}"
-    "DOCKER_REGISTRY_SERVER_USERNAME"     = "${azurerm_container_registry.acr.admin_username}"
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = "${azurerm_container_registry.acr.admin_password}"
+    "DOCKER_REGISTRY_SERVER_URL"          = azurerm_container_registry.acr.login_server
+    "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
 
 
   }
   site_config {
-    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.name}.azurecr.io/mkk:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.login_server}/mkk:latest"
 
   }
   identity {

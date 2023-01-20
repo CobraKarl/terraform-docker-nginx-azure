@@ -1,6 +1,6 @@
 image=mkk
-rg=mkk200
-acr=ontainerregistrymkk2000 
+rg=mkk2000
+acr=containerregistrymkk2000 
 
 
 # Build the Docker image in Azure container registry
