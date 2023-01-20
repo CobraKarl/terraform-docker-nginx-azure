@@ -4,10 +4,7 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "2.91.0"
     }
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 2.13.0"
-    }
+ 
   }
 }
 
@@ -21,24 +18,6 @@ provider "azurerm" {
   }
 }
 
-provider "docker" {
-  registry_auth {
-    address  = azurerm_container_registry.acr.login_server
-    username = azurerm_container_registry.acr.admin_username
-    password = azurerm_container_registry.acr.admin_password
-  }
-
-}
-
-resource "docker_registry_image" "mkk" {
-  name          = "mkk"
-  keep_remotely = false
-  build {
-    context    = path.cwd
-    dockerfile = "Dockerfile"
-  }
-
-}
 
 
 
