@@ -48,7 +48,7 @@ resource "azurerm_storage_container" "container" {
 
 
 
-resource "azurerm_container_registry" "container_registry" {
+resource "azurerm_container_registry" "acr" {
   name                = "containerregistry${var.RGName}"
   resource_group_name = var.RGName
   location            = var.location
@@ -107,19 +107,22 @@ resource "azurerm_app_service" "app" {
   app_service_plan_id = azurerm_app_service_plan.asp.id
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "DOCKER_REGISTRY_SERVER_URL"          = "containerregistrymkk2000.azurecr.io"
-    "DOCKER_REGISTRY_SERVER_USERNAME"     = "containerregistrymkk2000"
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = "EZOV70YAInUEt41VkU8DAd/XwnNEokBYZn7TA59ffp+ACRD235Uf"
+    "DOCKER_REGISTRY_SERVER_URL"          = "https://${azurerm_container_registry.acr.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
 
 
   }
   site_config {
-    linux_fx_version = "DOCKER|containerregistrymkk2000.azurecr.io/mkk:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.name}.azurecr.io/mkk:latest"
 
   }
   identity {
     type = "SystemAssigned"
   }
+  depends_on = [
+    azurerm_container_registry.acr
+  ]
 
 
 }
