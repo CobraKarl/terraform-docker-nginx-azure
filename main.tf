@@ -109,12 +109,12 @@ resource "azurerm_app_service" "app" {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "DOCKER_REGISTRY_SERVER_URL"          = "https://${azurerm_container_registry.acr.login_server}"
     "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
-    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = "4KFgQy3e3tXm4Hy0KQT5csN7tJNcF/g7pJopL60V0R+ACRDHyw5S"
 
 
   }
   site_config {
-    linux_fx_version = "DOCKER|containerregistrymkk2000.azurecr.io/mkk:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.name}.azurecr.io/mkk:latest"
 
   }
   identity {
