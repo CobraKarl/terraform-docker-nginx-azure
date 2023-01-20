@@ -85,7 +85,7 @@ resource "azurerm_app_service_plan" "asp" {
 
 
 resource "azurerm_app_service" "app" {
-  name                = "app${var.RGName}"
+  name                = "tennis${var.RGName}"
   resource_group_name = var.RGName
   location            = var.location
   app_service_plan_id = azurerm_app_service_plan.asp.id
