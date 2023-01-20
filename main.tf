@@ -79,7 +79,7 @@ resource "azurerm_app_service_plan" "asp" {
   }
   depends_on = [
     azurerm_resource_group.rg,
-    azurerm_container_registry
+    azurerm_container_registry.acr
   ]
 
 }
