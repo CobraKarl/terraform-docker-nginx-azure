@@ -97,14 +97,16 @@ resource "azurerm_app_service" "app" {
     "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
 
 
+
   }
   site_config {
     linux_fx_version = "DOCKER|${azurerm_container_registry.acr.admin_username}.azurecr.io/mkk:latest"
-    managed_pipeline_mode = "Integrated"
+    
 
   }
   identity {
     type = "SystemAssigned"
+
   }
   depends_on = [
     azurerm_container_registry.acr
@@ -113,6 +115,18 @@ resource "azurerm_app_service" "app" {
   
 
 
+}
+
+resource "azurerm_container_registry_webhook" "webhook" {
+  name = "webhook"
+  resource_group_name = var.RGName
+  location = var.location
+  registry_name = azurerm_container_registry.acr.name
+  service_uri = "https://${azurerm_app_service.app.default_site_hostname}/latest"
+  status = "enabled"
+  actions = [ "push" ]
+
+  
 }
 
 output "app_service_hostname" {
