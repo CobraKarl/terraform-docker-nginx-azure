@@ -73,8 +73,8 @@ resource "azurerm_app_service_plan" "asp" {
   kind                = "Linux"
   reserved            = true
   sku {
-    tier = "Standard"
-    size = "S1"
+    tier = "Premium"
+    size = "P2V3"
 
   }
   depends_on = [
@@ -113,10 +113,11 @@ resource "azurerm_app_service" "app" {
 
 }
 
-output "Registry_image_tag" {
-  value = "${azurerm_container_registry.acr.admin_username}:latest"
+output "app_service_hostname" {
+  value = "https://${azurerm_app_service.app.default_site_hostname}"
   
 }
+  
 
 
 
