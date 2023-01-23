@@ -99,7 +99,7 @@ resource "azurerm_app_service" "app" {
 
   }
   site_config {
-    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.name}/mkk:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.admin_username}/mkk:latest"
 
   }
   identity {
@@ -110,6 +110,11 @@ resource "azurerm_app_service" "app" {
   ]
 
 
+}
+
+output "Registry_image_tag" {
+  value = "${azurerm_container_registry.acr.admin_username}/mkk:latest"
+  
 }
 
 
