@@ -99,7 +99,8 @@ resource "azurerm_app_service" "app" {
 
   }
   site_config {
-    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.admin_username}/mkk:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.acr.admin_username}.azurecr.io/mkk:latest"
+    
 
   }
   identity {
