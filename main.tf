@@ -95,6 +95,7 @@ resource "azurerm_app_service" "app" {
     "DOCKER_REGISTRY_SERVER_URL"          = azurerm_container_registry.acr.login_server
     "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.acr.admin_username
     "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.acr.admin_password
+    "DOCKER_ENABLE_CI": true
 
 
 

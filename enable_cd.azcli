@@ -1,0 +1,4 @@
+rg=mkk10
+WebAppName=webmkk10
+
+az webapp deployment container config --enable-cd true --name $WebAppName --resource-group $rg
