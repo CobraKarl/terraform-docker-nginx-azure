@@ -100,7 +100,7 @@ resource "azurerm_app_service" "app" {
   }
   site_config {
     linux_fx_version = "DOCKER|${azurerm_container_registry.acr.admin_username}.azurecr.io/mkk:latest"
-    
+    managed_pipeline_mode = "Integrated"
 
   }
   identity {
@@ -109,6 +109,8 @@ resource "azurerm_app_service" "app" {
   depends_on = [
     azurerm_container_registry.acr
   ]
+  
+  
 
 
 }
