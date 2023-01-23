@@ -113,7 +113,7 @@ resource "azurerm_app_service" "app" {
 }
 
 output "Registry_image_tag" {
-  value = "${azurerm_container_registry.acr.admin_username}/mkk:latest"
+  value = "${azurerm_container_registry.acr.admin_username}:latest"
   
 }
 
